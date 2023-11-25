@@ -1,0 +1,118 @@
+{% extends 'components/base.html' %}
+{% load static %}
+
+    {% block styles %}
+
+    {% endblock %}
+    
+        {% block content %}
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Modéle List</title>
+            <!-- Inclure les liens vers les fichiers CSS de Bootstrap -->
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+            <style>
+                .search-input {
+                    max-width: 200px;
+                    margin-bottom: 10px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1 class="mt-4">Modéle List</h1>
+                
+                <!-- Zone de recherche -->
+                <input type="text" class="form-control search-input" id="searchInput" placeholder="Rechercher...">
+                
+                <table class="table table-bordered table-striped mt-3">
+                    <thead>
+                        <tr>
+                            <th>Nom Variante</th>
+                            <th>Catégorie</th>
+                            <th>Sous Catégorie</th>
+                            <th>Nombre d'Étapes</th>
+                            <th>Début Saison</th>
+                            <th>Fin Saison</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for modéle in modéles %}
+                            <tr>
+                                <td>{{ modéle.nom_variante }}</td>
+                                <td>{{ modéle.get_categorie_display }}</td>
+                                <td>{{ modéle.sous_categorie }}</td>
+                                <td>{{ modéle.nombre_etape }}
+                                    &nbsp &nbsp &nbsp &nbsp
+                                    <a href="{% url 'saisie_etapes' modéle.pk  %}" class="btn btn-success">
+                                        <i class="fas fa-plus"></i>
+                                </td>
+                                <td>{{ modéle.debut_saison }}</td>
+                                <td>{{ modéle.fin_saison }}</td>
+                                <td>
+                                    <a href="{% url 'Modéle_detail' modéle.pk %}" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-info-circle"></i> <!-- Icône pour le détail -->
+                                    </a>
+                                    <a href="{% url 'update_Modéle' modéle.pk %}" class="btn btn-warning btn-sm">
+                                        <i class="fas fa-edit"></i> <!-- Icône pour la mise à jour -->
+                                    </a>
+                                    <a href="{% url 'delete_Modéle' modéle.pk %}" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash-alt"></i> <!-- Icône pour la suppression -->
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+                <a href="{% url 'create_M' %}" class="btn btn-success">
+                    <i class="fas fa-plus"></i> <!-- Icône "+" -->
+                </a>
+            </div>
+        
+            <script>
+                // Fonction de recherche en temps réel
+                document.getElementById("searchInput").addEventListener("keyup", function() {
+                    var searchValue = this.value.toLowerCase();
+                    var rows = document.querySelectorAll("tbody tr");
+        
+                    rows.forEach(function(row) {
+                        var cols = row.getElementsByTagName("td");
+                        var match = false;
+        
+                        for (var i = 0; i < cols.length; i++) {
+                            var colValue = cols[i].textContent.toLowerCase();
+        
+                            if (colValue.includes(searchValue)) {
+                                match = true;
+                                break;
+                            }
+                        }
+        
+                        if (match) {
+                            row.style.display = "table-row";
+                        } else {
+                            row.style.display = "none";
+                        }
+                    });
+                });
+            </script>
+        </body>
+        </html>
+        
+    
+       
+
+		
+
+        {% endblock %}
+
+    {% block scripts %}
+
+		
+
+    {% endblock %}

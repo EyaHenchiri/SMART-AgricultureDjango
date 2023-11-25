@@ -1,0 +1,45 @@
+{% extends 'components/base.html' %}
+{% load static %}
+
+    {% block styles %}
+
+    {% endblock %}
+    
+        {% block content %}
+        
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Delete Modéle_Variante</title>
+        </head>
+        <body>
+            <div class="row row-sm">
+                <div class="col-lg-6 col-xl-6 col-md-12 col-sm-12">
+                    <div class="card box-shadow-0">
+                        <div class="card-header border-bottom">
+                            <h3 class="card-title">Delete Modéle_Variante</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Are you sure you want to delete "{{ modéle.nom_variante }}"?</p>
+                            <form method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                                <a href="{% url 'list_M' %}" class="btn btn-secondary">Cancel</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </body>
+        </html>
+
+		
+
+        {% endblock %}
+
+    {% block scripts %}
+
+		
+
+    {% endblock %}

@@ -1,0 +1,465 @@
+{% extends 'components/base.html' %}
+{% load static %}
+
+    {% block styles %}
+
+    {% endblock %}
+    
+        {% block content %}
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Saisie des Étapes</title>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            
+        </head>
+        <body>
+            <div class="row row-sm">
+                <div class="col-lg-6 col-xl-6 col-md-12 col-sm-12">
+                    <div class="card box-shadow-0">
+                        <div class="card-header border-bottom">
+                            <h3 class="card-title">Create Étapes</h3>
+                        </div>
+                        <div class="card-body">
+                            <h2>Saisie des Étapes pour {{ variante.nom_variante }}</h2>
+                            <div id="form-container">
+                                <!-- Le formulaire pour la première étape -->
+                                <form method="post" enctype="multipart/form-data" class="form-horizontal">
+                                    {% csrf_token %}
+                                    
+                                   {% for step in "123456789"|make_list|slice:":nb_etape" %}
+                                <div id="step{{ step }}" {% if step != "1" %}style="display: none;"{% endif %}>
+                                            <!-- Champs pour l'étape {{ step }} -->
+                                          
+                                            <!-- Champs de saisie pour la première étape -->
+                                            <div id="form-container">
+                                                <div class="form-group">
+                                                    <!-- Premier formulaire pour la première étape -->
+                                                    <label for="nom_etape_{{ step }}">Nom de l'Étape:</label>
+                                                    <input type="text" id="nom_etape_{{ step }}" name="nom_etape_{{ step }}" required class="form-control"><br>
+                        
+                                                    <label for="periode_min_{{ step }}">Période Min:</label>
+                                                    <input type="number" id="periode_min_{{ step }}" name="periode_min_{{ step }}" min="1" required class="form-control"><br>
+                        
+                                                    <label for="periode_max_{{ step }}">Période Max:</label>
+                                                    <input type="number" id="periode_max_{{ step }}" name="periode_max_{{ step }}" min="1" required class="form-control"><br>
+                        
+                                                    <label for="action_sur_terre_{{ step }}">Action sur la Terre:</label>
+                                                    <select id="action_sur_terre_{{ step }}" name="action_sur_terre_{{ step }}" class="form-control">
+                                                        <option value="labourage">Labourage</option>
+                                                        <option value="ameublissement">Ameublissement</option>
+                                                        <option value="fertilisation">Fertilisation</option>
+                                                    </select><br>
+                        
+                                                    <label for="irrigation_quantite_{{ step }}">Quantité d'Irrigation:</label>
+                                                    <input type="number" id="irrigation_quantite_{{ step }}" name="irrigation_quantite_{{ step }}" class="form-control"><br>
+                        
+                                                    <label for="irrigation_periode_{{ step }}">Période d'Irrigation:</label>
+                                                    <input type="text" id="irrigation_periode_{{ step }}" name="irrigation_periode_{{ step }}" class="form-control"><br>
+                        
+                                                    <label for="type_fertilisation_{{ step }}">Type de Fertilisation:</label>
+                                                    <select id="type_fertilisation_{{ step }}" name="type_fertilisation_{{ step }}">
+                                                        {% for fertilisation in fertilisations %}
+                                                            <option value="{{ fertilisation.id }}">{{ fertilisation.Nom_Commercial }}</option>
+                                                        {% endfor %}
+                                                    </select><br>
+                        
+                                                    <label for="type_fertilisation_quantite_{{ step }}">Quantité de Fertilisation:</label>
+                                                    <input type="number" id="type_fertilisation_quantite_{{ step }}" name="type_fertilisation_quantite_{{ step }}" class="form-control"><br>
+                        
+                                                    <label for="type_fertilisation_periode_{{ step }}">Période de Fertilisation:</label>
+                                                    <input type="text" id="type_fertilisation_periode_{{ step }}" name="type_fertilisation_periode_{{ step }}" class="form-control"><br>
+                        
+                                                    <label for="image_{{ step }}">Image:</label>
+                                                    <input type="file" id="image_{{ step }}" name="image_{{ step }}"><br>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                    
+                                    <button type="button" onclick="previousStep()" class="btn btn-secondary" id="previousButton" disabled>Previous</button>
+                                    <button type="button" onclick="nextStep()" class="btn btn-primary" id="nextButton">Next</button>
+                                    <button type="submit" class="btn btn-primary" id="createButton" disabled>Create</button>
+                                </form>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                let currentStep = 1;
+                const nbEtape = parseInt('{{ nb_etape }}');
+                function nextStep() {
+        if (currentStep < nbEtape) {
+            document.getElementById(`step${currentStep}`).style.display = 'none';
+            currentStep++;
+            document.getElementById(`step${currentStep}`).style.display = 'block';
+            updateButtonStates();
+        }
+    }
+
+    function previousStep() {
+        if (currentStep > 1) {
+            document.getElementById(`step${currentStep}`).style.display = 'none';
+            currentStep--;
+            document.getElementById(`step${currentStep}`).style.display = 'block';
+            updateButtonStates();
+        }
+    }
+
+    function updateButtonStates() {
+        document.getElementById('previousButton').disabled = currentStep === 1;
+        document.getElementById('nextButton').disabled = currentStep === nbEtape;
+        
+        let allStepsFilled = true;
+        for (let step = 1; step <= nbEtape; step++) {
+            const stepForm = document.getElementById(`step${step}`);
+            const inputs = stepForm.getElementsByTagName('input');
+            const selects = stepForm.getElementsByTagName('select');
+            
+            for (const input of inputs) {
+                if (!input.value) {
+                    allStepsFilled = false;
+                    break;
+                }
+            }
+            
+            for (const select of selects) {
+                if (select.selectedIndex < 1) {
+                       allStepsFilled = false;
+                  break;
+                }
+            }
+        }
+        
+        document.getElementById('createButton').disabled = !allStepsFilled;
+    }
+
+            
+              
+            </script>
+        </body>
+        </html>
+        
+        
+        
+
+
+        {% endblock %}
+
+    {% block scripts %}
+
+		
+
+    {% endblock %}
+
+    <!--
+
+        
+    -->
+    <!--
+               <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Saisie des Étapes</title>
+        </head>
+        <body>
+            <div class="row row-sm">
+                <div class="col-lg-6 col-xl-6 col-md-12 col-sm-12">
+                    <div class="card box-shadow-0">
+                        <div class="card-header border-bottom">
+                            <h3 class="card-title">Create Produit</h3>
+                        </div>
+                        <div class="card-body">
+                            <h2>Saisie des Étapes pour {{ variante.nom_variante }}</h2>
+        
+                            <form method="post" enctype="multipart/form-data" class="form-horizontal">
+                                {% csrf_token %}
+        
+                                {% for i in "x"|rjust:nb_etape %}
+                                    {% with counter=forloop.counter|stringformat:"s" %}
+                                        <div class="form-group">                
+                                            <label for="nom_etape_{{ counter }}">Nom de l'Étape:</label>
+                                            <input type="text" id="nom_etape_{{ counter }}" name="nom_etape_{{ counter }}" required class="form-control"><br>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="periode_min_{{ counter }}">Période Min:</label>
+                                            <input type="number" id="periode_min_{{ counter }}" name="periode_min_{{ counter }}" min="1" required class="form-control"><br>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="periode_max_{{ counter }}">Période Max:</label>
+                                            <input type="number" id="periode_max_{{ counter }}" name="periode_max_{{ counter }}" min="1" required class="form-control"><br>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="action_sur_terre_{{ counter }}">Action sur la Terre:</label>
+                                            <select id="action_sur_terre_{{ counter }}" name="action_sur_terre_{{ counter }}" class="form-control">
+                                                <option value="labourage">Labourage</option>
+                                                <option value="ameublissement">Ameublissement</option>
+                                                <option value="fertilisation">Fertilisation</option>
+                                            </select><br>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="irrigation_quantite_{{ counter }}">Quantité d'Irrigation:</label>
+                                            <input type="number" id="irrigation_quantite_{{ counter }}" name="irrigation_quantite_{{ counter }}" class="form-control"><br>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="irrigation_periode_{{ counter }}">Période d'Irrigation:</label>
+                                            <input type="text" id="irrigation_periode_{{ counter }}" name="irrigation_periode_{{ counter }}" class="form-control"><br>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="type_fertilisation_{{ counter }}">Type de Fertilisation:</label>
+                                            <select id="type_fertilisation_{{ counter }}" name="type_fertilisation_{{ counter }}">
+                                                <option value="">Sélectionnez</option>
+                                                {% for fertilisation in fertilisations %}
+                                                    <option value="{{ fertilisation.id }}">{{ fertilisation.Nom_Commercial }}</option>
+                                                {% endfor %}
+                                            </select><br>
+                                        </div>
+                                       
+                                        <div class="form-group">
+                                            <label for="type_fertilisation_quantite_{{ counter }}">Quantité de Fertilisation:</label>
+                                            <input type="number" id="type_fertilisation_quantite_{{ counter }}" name="type_fertilisation_quantite_{{ counter }}" class="form-control"><br>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="type_fertilisation_periode_{{ counter }}">Période de Fertilisation:</label>
+                                            <input type="text" id="type_fertilisation_periode_{{ counter }}" name="type_fertilisation_periode_{{ counter }}" class="form-control"><br>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="image_{{ counter }}">Image:</label>
+                                            <input type="file" id="image_{{ counter }}" name="image_{{ counter }}"><br>
+                                        </div>
+                                        
+                                    {% endwith %}
+                                {% endfor %}
+        
+                                <div class="form-group mt-3">
+                                    <div>
+                                        <button type="submit" class="btn btn-primary" {% if all_steps_entered %}disabled{% endif %}>Create</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </body>
+        </html> 
+    -->
+
+
+
+
+<!--
+                <!DOCTYPE html>
+<html>
+<head>
+    <title>Saisie des Étapes</title>
+</head>
+<body>
+    <div class="row row-sm">
+        <div class="col-lg-6 col-xl-6 col-md-12 col-sm-12">
+            <div class="card box-shadow-0">
+                <div class="card-header border-bottom">
+                    <h3 class="card-title">Create Produit</h3>
+                </div>
+                <div class="card-body">
+                    <h2>Saisie des Étapes pour {{ variante.nom_variante }}</h2>
+
+                    <form method="post" enctype="multipart/form-data" class="form-horizontal">
+                        {% csrf_token %}
+
+                        {% for i in "x"|rjust:nb_etape %}
+                            {% with counter=forloop.counter|stringformat:"s" %}
+                                <div class="form-group">                
+                                    <label for="nom_etape_{{ counter }}">Nom de l'Étape:</label>
+                                    <input type="text" id="nom_etape_{{ counter }}" name="nom_etape_{{ counter }}" required class="form-control"><br>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="periode_min_{{ counter }}">Période Min:</label>
+                                    <input type="number" id="periode_min_{{ counter }}" name="periode_min_{{ counter }}" min="1" required class="form-control"><br>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="periode_max_{{ counter }}">Période Max:</label>
+                                    <input type="number" id="periode_max_{{ counter }}" name="periode_max_{{ counter }}" min="1" required class="form-control"><br>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="action_sur_terre_{{ counter }}">Action sur la Terre:</label>
+                                    <select id="action_sur_terre_{{ counter }}" name="action_sur_terre_{{ counter }}" class="form-control">
+                                        <option value="labourage">Labourage</option>
+                                        <option value="ameublissement">Ameublissement</option>
+                                        <option value="fertilisation">Fertilisation</option>
+                                    </select><br>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="irrigation_quantite_{{ counter }}">Quantité d'Irrigation:</label>
+                                    <input type="number" id="irrigation_quantite_{{ counter }}" name="irrigation_quantite_{{ counter }}" class="form-control"><br>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="irrigation_periode_{{ counter }}">Période d'Irrigation:</label>
+                                    <input type="text" id="irrigation_periode_{{ counter }}" name="irrigation_periode_{{ counter }}" class="form-control"><br>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="type_fertilisation_{{ counter }}">Type de Fertilisation:</label>
+                                    <select id="type_fertilisation_{{ counter }}" name="type_fertilisation_{{ counter }}">
+                                        <option value="">Sélectionnez</option>
+                                        {% for fertilisation in fertilisations %}
+                                            <option value="{{ fertilisation.id }}">{{ fertilisation.Nom_Commercial }}</option>
+                                        {% endfor %}
+                                    </select><br>
+                                </div>
+                               
+                                <div class="form-group">
+                                    <label for="type_fertilisation_quantite_{{ counter }}">Quantité de Fertilisation:</label>
+                                    <input type="number" id="type_fertilisation_quantite_{{ counter }}" name="type_fertilisation_quantite_{{ counter }}" class="form-control"><br>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="type_fertilisation_periode_{{ counter }}">Période de Fertilisation:</label>
+                                    <input type="text" id="type_fertilisation_periode_{{ counter }}" name="type_fertilisation_periode_{{ counter }}" class="form-control"><br>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="image_{{ counter }}">Image:</label>
+                                    <input type="file" id="image_{{ counter }}" name="image_{{ counter }}"><br>
+                                </div>
+                                
+                            {% endwith %}
+                        {% endfor %}
+
+                        <div class="form-group mt-3">
+                            <div>
+                                <button type="submit" class="btn btn-primary" {% if all_steps_entered %}disabled{% endif %}>Create</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+        -->
+
+
+
+
+
+
+
+
+    <!--
+            <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Saisie des Étapes</title>
+        </head>
+        <body>
+            <div class="row row-sm">
+                <div class="col-lg-6 col-xl-6 col-md-12 col-sm-12">
+                    <div class="card box-shadow-0">
+                        <div class="card-header border-bottom">
+                            <h3 class="card-title">Create Produit</h3>
+                        </div>
+                        <div class="card-body">
+                            <h2>Saisie des Étapes pour {{ variante.nom_variante }}</h2>
+        
+                            <form method="post" enctype="multipart/form-data" class="form-horizontal">
+                                {% csrf_token %}
+        
+                                {% for i in "x"|rjust:nb_etape %}
+                                    {% with counter=forloop.counter|stringformat:"s" %}
+                                        <div class="form-group">                
+                                            <label for="nom_etape_{{ counter }}">Nom de l'Étape:</label>
+                                            <input type="text" id="nom_etape_{{ counter }}" name="nom_etape_{{ counter }}" required class="form-control"><br>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="periode_min_{{ counter }}">Période Min:</label>
+                                            <input type="number" id="periode_min_{{ counter }}" name="periode_min_{{ counter }}" min="1" required class="form-control"><br>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="periode_max_{{ counter }}">Période Max:</label>
+                                            <input type="number" id="periode_max_{{ counter }}" name="periode_max_{{ counter }}" min="1" required class="form-control"><br>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="action_sur_terre_{{ counter }}">Action sur la Terre:</label>
+                                            <select id="action_sur_terre_{{ counter }}" name="action_sur_terre_{{ counter }}" class="form-control">
+                                                <option value="labourage">Labourage</option>
+                                                <option value="ameublissement">Ameublissement</option>
+                                                <option value="fertilisation">Fertilisation</option>
+                                            </select><br>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="irrigation_quantite_{{ counter }}">Quantité d'Irrigation:</label>
+                                            <input type="number" id="irrigation_quantite_{{ counter }}" name="irrigation_quantite_{{ counter }}" class="form-control"><br>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="irrigation_periode_{{ counter }}">Période d'Irrigation:</label>
+                                            <input type="text" id="irrigation_periode_{{ counter }}" name="irrigation_periode_{{ counter }}" class="form-control"><br>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="type_fertilisation_{{ counter }}">Type de Fertilisation:</label>
+                                            <select id="type_fertilisation_{{ counter }}" name="type_fertilisation_{{ counter }}">
+                                                <option value="">Sélectionnez</option>
+                                                {% for fertilisation in fertilisations %}
+                                                    <option value="{{ fertilisation.id }}">{{ fertilisation.Nom_Commercial }}</option>
+                                                {% endfor %}
+                                            </select><br>
+                                        </div>
+                                       
+                                        <div class="form-group">
+                                            <label for="type_fertilisation_quantite_{{ counter }}">Quantité de Fertilisation:</label>
+                                            <input type="number" id="type_fertilisation_quantite_{{ counter }}" name="type_fertilisation_quantite_{{ counter }}" class="form-control"><br>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="type_fertilisation_periode_{{ counter }}">Période de Fertilisation:</label>
+                                            <input type="text" id="type_fertilisation_periode_{{ counter }}" name="type_fertilisation_periode_{{ counter }}" class="form-control"><br>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="image_{{ counter }}">Image:</label>
+                                            <input type="file" id="image_{{ counter }}" name="image_{{ counter }}"><br>
+                                        </div>
+                                        
+                                    {% endwith %}
+                                {% endfor %}
+        
+                                <div class="form-group mt-3">
+                                    <div>
+                                        <button type="submit" class="btn btn-primary" {% if all_steps_entered %}disabled{% endif %}>Create</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </body>
+        </html>
+        -->
+
+
+<!--
+    
+-->

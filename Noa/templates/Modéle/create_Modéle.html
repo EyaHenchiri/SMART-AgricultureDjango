@@ -1,0 +1,77 @@
+{% extends 'components/base.html' %}
+{% load static %}
+
+    {% block styles %}
+
+    {% endblock %}
+    
+        {% block content %}
+
+        <!DOCTYPE html>
+<html>
+<head>
+    <title>Create Modéle</title>
+</head>
+<body>
+    <div class="row row-sm">
+        <div class="col-lg-6 col-xl-6 col-md-12 col-sm-12">
+            <div class="card box-shadow-0">
+                <div class="card-header border-bottom">
+                    <h3 class="card-title">Create Modéle</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data" class="form-horizontal">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="categorie">Catégorie:</label>
+                            <select id="categorie" name="categorie" class="form-control">
+                                <option value="plante">Plante</option>
+                                <option value="arbre">Arbre</option>
+                                <option value="semis">Semis</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="sous_categorie">Sous Catégorie:</label>
+                            <input type="text" id="sous_categorie" name="sous_categorie" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="nom_variante">Nom Variante:</label>
+                            <input type="text" id="nom_variante" name="nom_variante" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="nombre_etape">Nombre d'Étapes:</label>
+                            <input type="number" id="nombre_etape" name="nombre_etape" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description:</label>
+                            <textarea id="description" name="description" class="form-control"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="debut_saison">Début Saison:</label>
+                            <input type="date" id="debut_saison" name="debut_saison" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="fin_saison">Fin Saison:</label>
+                            <input type="date" id="fin_saison" name="fin_saison" class="form-control">
+                        </div>
+                        <div class="form-group mt-3">
+                            <div>
+                                <button type="submit" class="btn btn-primary">Create</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+        {% endblock %}
+
+    {% block scripts %}
+
+		
+
+    {% endblock %}

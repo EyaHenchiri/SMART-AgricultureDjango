@@ -1,0 +1,86 @@
+{% extends 'components/base.html' %}
+{% load static %}
+
+    {% block styles %}
+
+    {% endblock %}
+    
+        {% block content %}
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Create Fertilisation</title>
+        </head>
+        <body>
+            <div class="row row-sm">
+                <div class="col-lg-6 col-xl-6 col-md-12 col-sm-12">
+                    <div class="card box-shadow-0">
+                        <div class="card-header border-bottom">
+                            <h3 class="card-title">Create Fertilisation</h3>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" enctype="multipart/form-data" class="form-horizontal">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="Nom_Commercial">Nom Commercial:</label>
+                                    <input type="text" id="Nom_Commercial" name="Nom_Commercial" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="image">Image:</label>
+                                    <input type="file" id="image" name="image" class="form-control-file">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="QuantiteTotal">Quantite Total:</label>
+                                    <input type="number" id="QuantiteTotal" name="QuantiteTotal" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="Quantite_H">Quantite H:</label>
+                                    <input type="number" id="Quantite_H" name="Quantite_H" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="N">N:</label>
+                                    <input type="number" id="N" name="N" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="K2O">K2O:</label>
+                                    <input type="number" id="K2O" name="K2O" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="P2O5">P2O5:</label>
+                                    <input type="number" id="P2O5" name="P2O5" class="form-control">
+                                </div>
+                                <div class="form-group ">
+                                    <div class="row">
+                                        <div class="col-md-3 col">
+                                            <label class="form-label">catégorie</label>
+                                        </div>
+                                        <div class="col-md-9 col verification-options-main" id="verification">
+                                            <label class="ckbox"><input type="checkbox" ><span>arbre</span></label>
+                                            <label class="ckbox"><input type="checkbox"><span>semis</span></label>
+                                            <label class="ckbox"><input type="checkbox" ><span>plante</span></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <div>
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </body>
+        </html>
+        
+
+        {% endblock %}
+
+    {% block scripts %}
+
+		
+
+    {% endblock %}

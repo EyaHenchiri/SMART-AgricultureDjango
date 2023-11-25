@@ -1,0 +1,43 @@
+{% extends 'components/base.html' %}
+{% load static %}
+
+    {% block styles %}
+
+    {% endblock %}
+    
+        {% block content %}
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Delete Fertilisation</title>
+        </head>
+        <body>
+            <div class="row row-sm">
+                <div class="col-lg-6 col-xl-6 col-md-12 col-sm-12">
+                    <div class="card box-shadow-0">
+                        <div class="card-header border-bottom">
+                            <h3 class="card-title">Delete Fertilisation</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Are you sure you want to delete "{{ fertilisation.Nom_Commercial }}"?</p>
+                            <form method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                                <a href="{% url 'fertilisation_list' %}" class="btn btn-secondary">Cancel</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </body>
+        </html>
+        
+
+        {% endblock %}
+
+    {% block scripts %}
+
+		
+
+    {% endblock %}

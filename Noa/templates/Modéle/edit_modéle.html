@@ -1,0 +1,81 @@
+{% extends 'components/base.html' %}
+{% load static %}
+
+    {% block styles %}
+
+    {% endblock %}
+    
+        {% block content %}
+
+        <!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Modéle</title>
+</head>
+<body>
+    <div class="row row-sm">
+        <div class="col-lg-6 col-xl-6 col-md-12 col-sm-12">
+            <div class="card box-shadow-0">
+                <div class="card-header border-bottom">
+                    <h3 class="card-title">Edit Modéle</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data" class="form-horizontal">
+                        {% csrf_token %}
+                        <input type="hidden" name="modéle_id" value="{{ modéle.id }}">
+                        <div class="form-group">
+                            <label for="categorie">Catégorie:</label>
+                            <select id="categorie" name="categorie" class="form-control">
+                                <option value="plante" {% if modéle.categorie == 'plante' %}selected{% endif %}>Plante</option>
+                                <option value="arbre" {% if modéle.categorie == 'arbre' %}selected{% endif %}>Arbre</option>
+                                <option value="semis" {% if modéle.categorie == 'semis' %}selected{% endif %}>Semis</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="sous_categorie">Sous Catégorie:</label>
+                            <input type="text" id="sous_categorie" name="sous_categorie" class="form-control" value="{{ modéle.sous_categorie }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="nom_variante">Nom Variante:</label>
+                            <input type="text" id="nom_variante" name="nom_variante" class="form-control" value="{{ modéle.nom_variante }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="nombre_etape">Nombre d'Étapes:</label>
+                            <input type="number" id="nombre_etape" name="nombre_etape" class="form-control" value="{{ modéle.nombre_etape }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description:</label>
+                            <textarea id="description" name="description" class="form-control">{{ modéle.description }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="debut_saison">Début Saison:</label>
+                            <input type="date" id="debut_saison" name="debut_saison" class="form-control" value="{{ modéle.debut_saison }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="fin_saison">Fin Saison:</label>
+                            <input type="date" id="fin_saison" name="fin_saison" class="form-control" value="{{ modéle.fin_saison }}">
+                        </div>
+                        <div class="form-group mt-3">
+                            <div>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+        
+        
+        
+
+        {% endblock %}
+
+    {% block scripts %}
+
+		
+
+    {% endblock %}
